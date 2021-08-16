@@ -1,1 +1,14 @@
+trigger: none
 
+pool:
+  vmImage: 'Ubuntu-16.04'
+
+steps:
+    
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      cd $(System.DefaultWorkingDirectory)
+            git clone https://github.com/sahitya12/myrepo.git  #clone Repo
+            cd $(System.DefaultWorkingDirectory)                        #enter inside the rep0
