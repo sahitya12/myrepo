@@ -1,0 +1,20 @@
+$Enterpriseapp = Get-AzureADApplication -All:$true
+  
+foreach ($EntObjtID in $Enterpriseapp)  
+{  
+$spnAppID = Get-AzureADApplicationOwner -ObjectId $EntObjtID.ObjectId  
+Write-Host "Object ID : " $spnAppID.ObjectID  
+foreach ($spnAapID in $spnAppID)  
+{  
+$Object = New-Object PSCustomObject  
+$Object | Add-Member -Type NoteProperty -Name "App Display Name" -Value $EntObjtID.DisplayName  
+$Object | Add-Member -Type NoteProperty -Name "App AppId" -Value $EntObjtID.AppId  
+$Object | Add-Member -Type NoteProperty -Name "App ObjectID" -Value $EntObjtID.ObjectID  
+$Object | Add-Member -Type NoteProperty -Name "Owner Display Name" -Value $spnAapID.DisplayName  
+$Object | Add-Member -Type NoteProperty -Name "Owner Object ID" -Value $spnAapID.ObjectID  
+$Object | Add-Member -Type NoteProperty -Name "Owner Alias" -Value $spnAapID.UserPrincipalName  
+$Object | Add-Member -Type NoteProperty -Name "User Type" -Value $spnAapID.UserType  
+$Object | Add-Member -Type NoteProperty -Name "SignInAudience" -Value $EntObjtID.SignInAudience 
+$Object | Export-Csv appregowners.csv -NoTypeInformation -Append  
+}  
+}
